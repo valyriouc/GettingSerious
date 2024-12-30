@@ -62,7 +62,6 @@ public class JsonReader
             throw new JsonException("An array can only contain objects!");
         }
         int count = 0;
-
     }
 
     private void ObjectReadingMode(ReadOnlySpan<byte> span)
@@ -71,6 +70,11 @@ public class JsonReader
         {
             span = span[1..].SkipWhitespaces();
 
+            if (span.IsEmpty)
+            {
+                throw new JsonException("A JSON object must be closed!");
+            }
+            
             if (span[0] == (byte)JsonToken.CurlyBraceClose)
             {
                 break;
